@@ -1,27 +1,34 @@
+# <p align="center">
+#   <img src="https://raw.githubusercontent.com/pr1t4m-d3y/pr1t4m-d3y/output/snake.svg" />
+# </p>
 
-# name: Generate Pacman Contribution Graph
+#ADD THIS LINE IN README. AND RENAME TO snake.yml
+
+# name: Generate snake animation
 
 # on:
-#   schedule:
-#     - cron: "0 */24 * * *"
-#   workflow_dispatch:
+#   schedule: # execute every 12 hours
+#     - cron: "* */12 * * *"
 
-# permissions:
-#   contents: write
+#   workflow_dispatch:
 
 # jobs:
 #   generate:
+#     permissions:
+#       contents: write
 #     runs-on: ubuntu-latest
-#     steps:
-#       - uses: Platane/snk@v3
-#         with:
-#           github_user_name: pr1t4m-d3y
-#           outputs: |
-#             dist/pacman.svg
-#             dist/pacman-dark.svg?palette=github-dark
+#     timeout-minutes: 5
 
-#       - name: Push generated files
-#         uses: crazy-max/ghaction-github-pages@v3
+#     steps:
+#       - name: generate snake.svg
+#         uses: Platane/snk/svg-only@v3
+#         with:
+#           github_user_name: ${{ github.repository_owner }}
+#           outputs: dist/snake.svg?palette=github-dark
+
+
+#       - name: push snake.svg to the output branch
+#         uses: crazy-max/ghaction-github-pages@v3.1.0
 #         with:
 #           target_branch: output
 #           build_dir: dist
@@ -37,9 +44,6 @@ on:
 
   workflow_dispatch:
 
-  push:
-    branches:
-    - main
 
 jobs:
   generate:
@@ -53,6 +57,7 @@ jobs:
         uses: abozanona/pacman-contribution-graph@main
         with:
           github_user_name: ${{ github.repository_owner }}
+          theme: dark
 
 
       - name: push pacman-contribution-graph.svg to the output branch
